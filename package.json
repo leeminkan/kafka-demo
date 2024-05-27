@@ -1,0 +1,16 @@
+{
+	"scripts": {
+		"build": "tsc",
+		"start": "npm run build && node dist/index.js",
+		"start:producer": "npm run build && node dist/producer.js",
+		"start:consumer": "npm run build && node dist/consumer.js"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.28",
+		"typescript": "^5.4.2"
+	},
+	"dependencies": {
+		"dotenv": "^16.4.5",
+		"kafkajs": "^2.2.4"
+	}
+}

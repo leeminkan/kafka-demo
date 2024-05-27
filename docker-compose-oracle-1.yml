@@ -1,0 +1,75 @@
+version: '3'
+services:
+  zookeeper-1:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper-1
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22181:2181"
+
+  zookeeper-2:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper-2
+    environment:
+      ZOOKEEPER_SERVER_ID: 2
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22182:2181"
+
+  broker-2:
+    image: confluentinc/cp-kafka:latest
+    container_name: broker-2
+    ports:
+      - "19092:19092"
+    depends_on:
+      - zookeeper-1
+      - zookeeper-2
+    environment:
+      KAFKA_BROKER_ID: 2
+      # KAFKA_ADVERTISED_HOST_NAME: first.leeminkan.dev
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper-1:2181,zookeeper-2:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      # KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:19092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker-2:9092,EXTERNAL://first.leeminkan.dev:19092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+  broker-3:
+    image: confluentinc/cp-kafka:latest
+    container_name: broker-3
+    ports:
+      - "19093:19093"
+    depends_on:
+      - zookeeper-1
+      - zookeeper-2
+    environment:
+      KAFKA_BROKER_ID: 3
+      # KAFKA_ADVERTISED_HOST_NAME: first.leeminkan.dev
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper-1:2181,zookeeper-2:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      # KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:19093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker-3:9092,EXTERNAL://first.leeminkan.dev:19093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+  broker-4:
+    image: confluentinc/cp-kafka:latest
+    container_name: broker-4
+    ports:
+      - "19094:19094"
+    depends_on:
+      - zookeeper-1
+      - zookeeper-2
+    environment:
+      KAFKA_BROKER_ID: 4
+      # KAFKA_ADVERTISED_HOST_NAME: first.leeminkan.dev
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper-1:2181,zookeeper-2:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      # KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:19094
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker-4:9092,EXTERNAL://first.leeminkan.dev:19094
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
